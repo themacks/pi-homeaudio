@@ -5,12 +5,22 @@ import webpy.web as web
 render = web.template.render('templates/')
 
 urls = (
-    '/(.*)', 'index'
+    '/', 'index',
+    '/pandora', 'pandora',
+    '/airplay', 'airplay'
 )
 
 class index:
-    def GET(self, name):
-        return render.index(name)
+    def GET(self):
+        return render.index()
+        
+class pandora:
+    def GET(self):
+        return "Pandora!"
+        
+class airplay:
+    def GET(self):
+        return "Airplay!"
 
 if __name__ == "__main__":
     app = web.application(urls, globals())
