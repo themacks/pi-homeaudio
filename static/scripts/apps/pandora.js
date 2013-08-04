@@ -16,7 +16,9 @@ $(document).ready( function() {
 //Interval between check varies on apps current state
 //Initial - 1sec
 //Playing - 0.5sec
-//Inactive - 5sec
+//Inactive - 5sec up to 10sec
+var timeout = 5000;
+var statusActive = true;
 function statusCheck(){
     $.ajax({
             url: './status',
@@ -24,13 +26,20 @@ function statusCheck(){
             cache: false,
             success: statusHandle,
             complete: function() {
-                setTimeout(statusCheck, 5000);
+                if (statusActive){
+                    setTimeout(statusCheck, timeout);
+                }
                 }
             });            
 }
 
 //Function to handle status update. 
 function statusHandle(data){
-    alert('Received: '+data);
+
+    //as long as we are processing the status we don't want another to fire
+    statusActive = false;
+    
+    $.mobile.changePage( "./pandora#login", { transition: "pop"} );
+    //alert('Received: '+data);
 }
 
